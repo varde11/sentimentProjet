@@ -23,6 +23,8 @@ jobs :
           pip install --upgrade pip
           pip install -r app/requirements.txt
           pip install pytest httpx dotenv
+          pip install --no-cache-dir --index-url https://download.pytorch.org/whl/cpu \
+          torch==2.2.2
       
       - name : Lancement du test
         

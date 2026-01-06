@@ -46,15 +46,13 @@ jobs :
         - name : build and push backend
           uses : docker/build-push-action@v4
           with :
-            context :
-              - ./app
+            context : ./app
             push : true 
             tags : ${{secrets.DOCKERHUB_USERNAME}}/imagesentiment:latest 
 
         - name : build and push frontend
           uses : docker/build-push-action@v4
           with :
-            context :
-              - ./ui
+            context : ./ui
             push : true 
             tags : ${{secrets.DOCKERHUB_USERNAME}}/sentimentprojet-ui:latest 

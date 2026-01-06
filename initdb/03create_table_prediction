@@ -1,0 +1,11 @@
+CREATE TABLE prediction(
+    id_prediction SERIAL PRIMARY KEY,
+    id_client INT REFERENCES client(id_client) NOT NULL,
+    id_produit INT REFERENCES produit (id_produit) NOT NULL,
+    avis TEXT NOT NULL,
+    label VARCHAR(10) NOT NULL,
+    confidence NUMERIC NOT NULL,
+    model VARCHAR(10) NOT NULL,
+    scores JSONB,
+    time_stamp TIMESTAMP
+);

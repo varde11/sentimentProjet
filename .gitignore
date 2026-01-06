@@ -1,0 +1,7 @@
+__pycache__/
+.pytest_cache/
+envSentiment/ 
+.vscode/
+.env
+tokenizer_compare.py
+xlmr_model/

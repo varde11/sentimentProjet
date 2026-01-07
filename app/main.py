@@ -136,7 +136,7 @@ def predict_sentiment (pred:PredictionIn_schema,db:Session=Depends(get_db)):
         scores = predict["scores"],
         time_stamp = datetime.now().strptime(time_stamp_str,"%Y-%m-%d %H:%M:%S")
     )
-    # ajoute un bloc pour vérifie que le client et le produit existe bien, peut être un try au niveau de db.add
+    # ajoute un bloc pour vérifie que le client et le produit existe bien, peut être un try au  niveau de db.add
     db.add(prediction)
     db.commit()
     db.refresh(prediction)

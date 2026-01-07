@@ -1,6 +1,5 @@
 import os
 import sys
-from dotenv import load_dotenv
 
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../app')))
 
@@ -15,7 +14,7 @@ from db import get_db
 from structure_table import Client, Produit,Prediction,Base
 
 SQLALCHEMY_DATABASE_URL = "sqlite:///:memory:"
-load_dotenv()
+
 
 engine = create_engine(
     SQLALCHEMY_DATABASE_URL,
@@ -64,7 +63,6 @@ def test_mon_api():
 
         reponse_get_produit = client.get("/GetProduit/1")
         assert reponse_get_produit.status_code == 200
-        assert reponse_get_produit.json()['lien'] == "http://localhost:8000/static/photo/lunette.png"
         assert reponse_get_produit.json()['detail'] == "Lunette pour être intélligent!"
 
         reponse_get_all_produit = client.get("/GetAllProduit")

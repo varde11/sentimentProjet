@@ -89,7 +89,7 @@ def predict_final(text:list[str]):
             }
 
 
-load_artificats()
-print(predict_final(["Super le produit!"]))
+#load_artificats()
+#print(predict_final(["Super le produit!"]))
 
 #print("Base_DIR:",BASE_DIR,"\nXLMR:",XLMR_PATH,"\nTFLR_PATH:",TFLR_PATH)

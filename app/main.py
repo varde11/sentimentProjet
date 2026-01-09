@@ -17,7 +17,12 @@ async def lifespan(app:FastAPI):
     print("préparation des ressources!")
     Base.metadata.create_all(bind=engine)
     load_artificats()
-    app.mount("/static", StaticFiles(directory="static"), name="static")
+
+    BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+    STATIC_DIR = os.path.join(BASE_DIR, "static")
+    os.makedirs(STATIC_DIR, exist_ok=True) 
+    
+    app.mount("/static", StaticFiles(directory=STATIC_DIR), name="static")
     print("préparation terminée")
     yield
     print("fermeture de l'application, merci de l'avoir essayer, a+")

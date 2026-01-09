@@ -1,8 +1,7 @@
 services:
   imagesentiment:
     build: ./app
-    volumes :
-      - ./static:/app/static
+      
     image: imagesentiment
     container_name: containersentiment
     ports:

@@ -57,7 +57,7 @@ git clone [cliquez ici](https://github.com/varde11/https://github.com/varde11/se
 cd https://github.com/varde11/sentimentProjet
 
 ```
-Ensuire, vous devez créer un dossier .env pour les variables d'environnement dans laquel vous pouvez mettre:
+Ensuire, vous devez créer un dossier .env pour les variables d'environnement dans lequel vous pouvez mettre:
 
 POSTGRES_USER = user
 POSTGRES_PASSWORD = password

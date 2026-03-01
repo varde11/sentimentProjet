@@ -5,12 +5,12 @@ import torch
 import torch.nn.functional as F
 import os
 
+BASE_DIR_tflr = os.path.dirname(os.path.abspath(__file__))
+BASE_DIR_xlmr = os.path.dirname(BASE_DIR_tflr)
 
-BASE_DIR = os.path.dirname(os.path.abspath(__file__) )
-#XLMR_PATH = os.path.join(BASE_DIR,"model","xlmr_model")
-XLMR_MODEL_ID = "varde11/sentiment_projet"
-TFLR_PATH = os.path.join(BASE_DIR,"model","TF_LR.pkl")
-
+XLMR_PATH = os.path.join(BASE_DIR_xlmr, "xlmr_model")
+XLMR_MODEL_ID = "varde11/sentiment_projet"  
+TFLR_PATH = os.path.join(BASE_DIR_tflr,"model","TF_LR.pkl")
 
 global tflr_seuil,xlmr_seuil,labels
 
@@ -26,9 +26,20 @@ def load_artificats():
     global tokenizer,xlmr_model,tflr_model
 
     if tokenizer == None:
-        tokenizer = AutoTokenizer.from_pretrained(XLMR_MODEL_ID)
+        
+        if os.path.exists(XLMR_PATH):
+            tokenizer = AutoTokenizer.from_pretrained(XLMR_PATH)
+            print("local")
+        else:
+            tokenizer = AutoTokenizer.from_pretrained(XLMR_MODEL_ID)
     if xlmr_model == None:
-        xlmr_model = AutoModelForSequenceClassification.from_pretrained(XLMR_MODEL_ID)
+    
+        if os.path.exists(XLMR_PATH):
+            xlmr_model = AutoModelForSequenceClassification.from_pretrained(XLMR_PATH)
+            print("local2")
+
+        else:
+            xlmr_model = AutoModelForSequenceClassification.from_pretrained(XLMR_MODEL_ID)
         xlmr_model.eval()
     if tflr_model == None :
         tflr_model = joblib.load(str(TFLR_PATH))

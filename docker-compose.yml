@@ -22,7 +22,7 @@ services:
     depends_on:
       - imagesentiment
     environment:
-      API_URL: http://imagesentiment:8000
+      API_URL: ${API_URL}
 
 
   db:

@@ -64,3 +64,24 @@ def predict(payload: dict):
 def update_label(id_prediction: int, label: str):
     
     return _put(f"/UpdateLabel/{id_prediction}", params={"label": label})
+
+
+
+from typing import Dict, Any
+
+class ApiError(Exception):
+    pass
+
+def _handle(resp: requests.Response) -> Dict[str, Any]:
+    try:
+        data = resp.json()
+    except Exception:
+        raise ApiError(f"Erreur API ({resp.status_code})")
+    if resp.status_code >= 400:
+        detail = data.get("detail") if isinstance(data, dict) else data
+        raise ApiError(f"Erreur API ({resp.status_code}): {detail}")
+    return data
+
+def get_monitoring_alerts(params: Dict[str, Any]) -> Dict[str, Any]:
+    resp = requests.get(f"{API_URL}/MonitoringAlerts", params=params, timeout=30)
+    return _handle(resp)

@@ -1,4 +1,5 @@
 from schema import ClientOut_schema,ProduitOut_schema,PredictionOut_schema,PredictionIn_schema,EnumLabel,FinalLabel
+from schema import  MonitoringOut, IncidentOut, QueueItemOut, PopularProductOut
 import os
 from structure_table import Client,Produit,Prediction,Base
 from logic import load_artificats, predict_final
@@ -6,10 +7,15 @@ from db import get_db,engine
 from sqlalchemy.orm import Session
 from sqlalchemy import func,select
 from datetime import datetime
-from fastapi import FastAPI,Depends,HTTPException
+from fastapi import FastAPI,Depends,HTTPException,Query
 from contextlib import asynccontextmanager
 from fastapi.staticfiles import StaticFiles
-from datetime import datetime
+from datetime import datetime,timedelta
+
+from typing import List, Dict, Any
+
+
+
 
 
 @asynccontextmanager
@@ -28,7 +34,7 @@ async def lifespan(app:FastAPI):
     print("fermeture de l'application, merci de l'avoir essayer, a+")
 
 
-app = FastAPI(title="API sentiment",lifespan=lifespan)
+app = FastAPI(title="API sentiment")
 
 
 @app.get("/GetClient/{id_client}",response_model=ClientOut_schema)
@@ -234,4 +240,60 @@ def update_label(id_prediction:int,label:FinalLabel,db:Session=Depends(get_db)):
     db.refresh(prediction)
 
     return prediction
+
+
+
+
+
+
+
+CRITICAL_KEYWORDS = [
+    "arnaque", "dangereux", "fraude", "risque", "explose", "brûle", "poison", "scam"
+]
+
+def contains_critical_keyword(text: str) -> bool:
+    t = (text or "").lower()
+    return any(k in t for k in CRITICAL_KEYWORDS)
+
+def compute_priority(
+    label: str,
+    confidence: float,
+    avis: str,
+    is_popular_product: bool
+) -> Dict[str, Any]:
+    score = 0
+    reasons = []
+
+    # Base sur label
+    if label == "negative":
+        score += 3
+        reasons.append("avis négatif")
+    elif label == "uncertain":
+        score += 1
+        reasons.append("avis incertain (à vérifier)")
+
+    # Confiance
+    if confidence >= 0.65:
+        score += 2
+        reasons.append("haute confiance")
+
+    # Mots critiques
+    if contains_critical_keyword(avis):
+        score += 3
+        reasons.append("mot-clé critique détecté")
+
+    # Popularité produit
+    if is_popular_product:
+        score += 3
+        reasons.append("produit populaire")
+
+    # Mapping score -> priorité
+    if score >= 7:
+        prio = "P0"
+    elif score >= 4:
+        prio = "P1"
+    else:
+        prio = "P2"
+
+    return {"priority": prio, "priority_score": score, "reasons": reasons}
 

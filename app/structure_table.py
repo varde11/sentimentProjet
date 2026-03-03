@@ -24,7 +24,7 @@ class Prediction (Base):
     __tablename__ = 'prediction'
 
     id_prediction = Column(Integer,primary_key=True,autoincrement=True,index=True)
-    id_client = Column (Integer, ForeignKey("client.id_client"),nullable=False)
+    id_client = Column (Integer, ForeignKey("client.id_client"),nullable=True)
     id_produit = Column (Integer, ForeignKey("produit.id_produit"),nullable=False)
     avis = Column (TEXT,nullable=False)
     label = Column (String,nullable=False)

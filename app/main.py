@@ -1,5 +1,5 @@
 from schema import ClientOut_schema,ProduitOut_schema,PredictionOut_schema,PredictionIn_schema,EnumLabel,FinalLabel
-from schema import  MonitoringOut, IncidentOut, QueueItemOut, PopularProductOut
+from schema import  MonitoringOut, IncidentOut, QueueItemOut, PopularProductOut,PredictPublicIn
 import os
 from structure_table import Client,Produit,Prediction,Base
 from logic import load_artificats, predict_final
@@ -34,7 +34,7 @@ async def lifespan(app:FastAPI):
     print("fermeture de l'application, merci de l'avoir essayer, a+")
 
 
-app = FastAPI(title="API sentiment")
+app = FastAPI(title="API sentiment",lifespan=lifespan)
 
 
 @app.get("/GetClient/{id_client}",response_model=ClientOut_schema)
@@ -154,6 +154,38 @@ def predict_sentiment (pred:PredictionIn_schema,db:Session=Depends(get_db)):
 
     return prediction 
 
+
+
+
+@app.post("/PredictPublic",response_model=PredictionOut_schema)
+def predict_sentiment (pred:PredictPublicIn,db:Session=Depends(get_db)):
+
+    
+    if not db.query(Produit).filter(Produit.id_produit==pred.id_produit).first():
+        raise HTTPException(status_code=404,detail=f"Le produit d'identifiant {pred.id_produit} n'existe pas.")
+
+    predict = predict_final([pred.avis])
+    time_stamp_str = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    prediction = Prediction(
+        id_client = None,
+        id_produit = pred.id_produit,
+        avis = pred.avis,
+        label = predict["label"],
+        confidence = predict["confidence"],
+        model =  predict["model"],
+        scores = predict["scores"],
+        time_stamp = datetime.now().strptime(time_stamp_str,"%Y-%m-%d %H:%M:%S")
+    )
+    # ajoute un bloc pour vérifie que le client et le produit existe bien, peut être un try au  niveau de db.add
+    db.add(prediction)
+    db.commit()
+    db.refresh(prediction)
+
+    return prediction 
+
+
+
+
 @app.post("/AddClient/{nom}/{langue}",response_model=ClientOut_schema)
 def add_client(nom:str,langue:str,db:Session=Depends(get_db)):
     client =  Client(nom = nom,langue = langue.upper())
@@ -248,7 +280,7 @@ def update_label(id_prediction:int,label:FinalLabel,db:Session=Depends(get_db)):
 
 
 CRITICAL_KEYWORDS = [
-    "arnaque", "dangereux", "fraude", "risque", "explose", "brûle", "poison", "scam"
+    "arnaque", "dangereux", "fraude", "risque", "explose", "brûle", "poison", "scam", 
 ]
 
 def contains_critical_keyword(text: str) -> bool:
@@ -297,3 +329,218 @@ def compute_priority(
 
     return {"priority": prio, "priority_score": score, "reasons": reasons}
 
+
+
+def matched_keywords(text: str) -> list[str]:
+    t = (text or "").lower()
+    return sorted([k for k in CRITICAL_KEYWORDS if k in t])
+
+
+
+@app.get("/MonitoringAlerts", response_model=MonitoringOut)
+def monitoring_alerts(
+    window_days: int = Query(7, ge=1, le=30),
+    spike_factor: float = Query(2.0, ge=1.0, le=10.0),
+    min_negative: int = Query(3, ge=1, le=50),
+    top_k_popular: int = Query(5, ge=1, le=20),
+    max_queue: int = Query(50, ge=1, le=200),
+    queue_offset: int = Query(0, ge=0, le=100000),
+
+    db: Session = Depends(get_db)
+):
+    now_str = datetime.now().strftime("%Y-%m-%d %H:%M:%S") 
+    now = datetime.now().strptime(now_str,"%Y-%m-%d %H:%M:%S")
+
+    start_last = now - timedelta(days=window_days)
+    start_prev = now - timedelta(days=2 * window_days)
+
+    # 1) Charger avis (predictions) sur 14 jours pour calcul last/prev
+    rows = (
+        db.query(Prediction)
+        .filter(Prediction.time_stamp >= start_prev)
+        .all()
+    )
+
+    if not rows:
+        return MonitoringOut(
+            window_days=window_days,
+            generated_at=now,
+            popular_products=[],
+            incidents=[],
+            review_queue=[],
+        )
+
+    # 2) Agrégation en mémoire (simple et efficace sur dataset 200-1000 lignes)
+    #    On groupe par produit et par fenêtre.
+    by_prod = {}
+    for r in rows:
+        pid = int(r.id_produit)
+        by_prod.setdefault(pid, {"last": [], "prev": []})
+        if r.time_stamp >= start_last:
+            by_prod[pid]["last"].append(r)
+        else:
+            by_prod[pid]["prev"].append(r)
+
+    # 3) Popularité : top produits par volume last_7d
+    popular_stats: List[PopularProductOut] = []
+    volume_list = []
+    for pid, grp in by_prod.items():
+        last = grp["last"]
+        if not last:
+            continue
+
+        counts = {"positive": 0, "negative": 0, "neutral": 0, "uncertain": 0}
+        for r in last:
+            lbl = (r.label or "").lower()
+            if lbl in counts:
+                counts[lbl] += 1
+
+        total = len(last)
+        volume_list.append((pid, total, counts))
+
+    volume_list.sort(key=lambda x: x[1], reverse=True)
+    top_pop = volume_list[:top_k_popular]
+    popular_set = {pid for pid, _, _ in top_pop}
+
+    for pid, total, counts in top_pop:
+        popular_stats.append(PopularProductOut(
+            id_produit=pid,
+            total_reviews_7d=total,
+            positive_7d=counts["positive"],
+            negative_7d=counts["negative"],
+            neutral_7d=counts["neutral"],
+            uncertain_7d=counts["uncertain"],
+        ))
+
+    # 4) Incidents : volume spike + keyword severity
+    incidents: List[IncidentOut] = []
+
+    for pid, grp in by_prod.items():
+        last = grp["last"]
+        prev = grp["prev"]
+
+        neg_last = sum(1 for r in last if (r.label or "").lower() == "negative")
+        neg_prev = sum(1 for r in prev if (r.label or "").lower() == "negative")
+
+        # Spike (avec garde-fou min_negative)
+        if neg_last >= min_negative and neg_last >= max(1, int(neg_prev * spike_factor)):
+            
+            neg_samples = [
+                {
+                    "id_prediction": c.id_prediction,
+                    "avis": (c.avis or "")[:120],
+                    "label": c.label,
+                    "confidence": float(c.confidence or 0.0),
+                    "time_stamp": c.time_stamp,
+                }
+                for c in last if (c.label or "").lower() == "negative"
+                 ][-2:]  
+            
+
+            ratio = round(neg_last / max(1, neg_prev), 2)
+            delta = neg_last - neg_prev
+
+            details = {
+                "neg_last_window": neg_last,
+                "neg_prev_window": neg_prev,
+                "delta": delta,
+                "ratio": ratio,
+                "spike_factor": spike_factor,
+                "is_popular": pid in popular_set,
+                "sample_predictions": neg_samples,
+            }
+
+
+            incidents.append(IncidentOut(
+                type="volume_spike",
+                id_produit=pid,
+                title=f"Pic de négatifs détecté sur produit #{pid}",
+                severity="P0" if pid in popular_set else "P1",
+                details=details,
+                time_window_days=window_days
+            ))
+
+        
+        # Keyword severity (si au moins un avis contient un mot critique sur last window)
+        crit = [r for r in last if contains_critical_keyword(r.avis)]
+        if crit:
+            sev = "P0" if (pid in popular_set or any((c.label or "").lower() == "negative" for c in crit)) else "P1"
+            
+            examples = [(c.avis or "")[:120] for c in crit[:3]]
+
+            # keywords réellement rencontrés
+            kws = sorted({kw for c in crit for kw in matched_keywords(c.avis)})
+
+            # 2 derniers avis négatifs (si tu veux aussi)
+            neg_samples = [
+                {
+                    "id_prediction": c.id_prediction,
+                    "avis": (c.avis or "")[:120],
+                    "label": c.label,
+                    "confidence": float(c.confidence or 0.0),
+                    "time_stamp": c.time_stamp,
+                }
+                for c in last if (c.label or "").lower() == "negative"
+            ][-2:]
+
+
+            incidents.append(IncidentOut(
+                type="keyword_severity",
+                id_produit=pid,
+                title=f"Mot-clé critique détecté sur produit #{pid}",
+                severity=sev,
+                details={
+                    "count": len(crit),
+                    "examples": examples,
+                    "matched_keywords": kws,
+                    "is_popular": pid in popular_set,
+                    "sample_predictions": neg_samples
+                },
+                time_window_days=window_days
+            ))
+
+
+
+
+
+    # 5) Review queue priorisée : surtout negative/uncertain sur last window
+    queue_candidates = []
+    for pid, grp in by_prod.items():
+        for r in grp["last"]:
+            lbl = (r.label or "").lower()
+            if lbl not in ["negative", "uncertain"]:
+                continue
+
+            pr = compute_priority(
+                label=lbl,
+                confidence=float(r.confidence or 0.0),
+                avis=r.avis or "",
+                is_popular_product=(pid in popular_set)
+            )
+            queue_candidates.append((pr["priority_score"], r, pr))
+
+    queue_candidates.sort(key=lambda x: x[0], reverse=True)
+    queue_candidates = queue_candidates[queue_offset: queue_offset + max_queue]
+
+    review_queue: List[QueueItemOut] = []
+    for score, r, pr in queue_candidates:
+        review_queue.append(QueueItemOut(
+            id_prediction=int(r.id_prediction),
+            id_produit=int(r.id_produit),
+            label=str(r.label),
+            confidence=float(r.confidence or 0.0),
+            model=str(r.model),
+            avis=str(r.avis),
+            time_stamp=r.time_stamp,
+            priority=pr["priority"],
+            priority_score=int(pr["priority_score"]),
+            reasons=pr["reasons"]
+        ))
+
+    return MonitoringOut(
+        window_days=window_days,
+        generated_at=now,
+        popular_products=popular_stats,
+        incidents=incidents,
+        review_queue=review_queue
+    )

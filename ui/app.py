@@ -9,6 +9,7 @@ from api_client import (
     get_predictions_by_produit,
     get_predictions_by_client,
     predict,
+    PredictPublic
     
 )
 
@@ -38,13 +39,13 @@ if st.session_state.nav_request is not None:
     st.session_state.nav_request = None
 
 
-# --------------------- Sidebar ---------------------
+# --------------------- Sidebar ---------------------# dépard
 st.sidebar.title("🛒 Sentiment E-commerce")
 
 
 st.sidebar.radio(
     "Navigation",
-    ["Catalogue", "Produit", "Clients", "Review Queue"],
+    ["Catalogue", "Produit", "Review Queue"],
     key="nav",
 )
 
@@ -76,7 +77,6 @@ def show_predictions_table(preds):
     cols_pref = [
         "time_stamp",
         "id_prediction",
-        "id_client",
         "id_produit",
         "label",
         "confidence",
@@ -174,23 +174,26 @@ elif page == "Produit":
             st.write(produit.get("detail", ""))
 
         
-        clients = get_all_clients()
-        dfc = pd.DataFrame(clients)
-        if dfc.empty:
-            st.warning("Aucun client en base.")
-            st.stop()
 
-        dfc["label_ui"] = dfc.apply(
-            lambda r: f"{int(r['id_client'])} — {r.get('nom','')} ({r.get('langue','')})",
-            axis=1,
-        )
+        # clients = get_all_clients()
+        # dfc = pd.DataFrame(clients)
+        # if dfc.empty:
+        #     st.warning("Aucun client en base.")
+        #     st.stop()
 
-        client_idx = st.selectbox(
-            "Client",
-            options=list(range(len(dfc))),
-            format_func=lambda i: dfc.iloc[i]["label_ui"],
-        )
-        id_client = int(dfc.iloc[client_idx]["id_client"])
+        # dfc["label_ui"] = dfc.apply(
+        #     lambda r: f"{int(r['id_client'])} — {r.get('nom','')} ({r.get('langue','')})",
+        #     axis=1,
+        # )
+
+        # client_idx = st.selectbox(
+        #     "Client",
+        #     options=list(range(len(dfc))),
+        #     format_func=lambda i: dfc.iloc[i]["label_ui"],
+        # )
+        # id_client = int(dfc.iloc[client_idx]["id_client"])
+
+
 
         st.markdown("### ✍️ Laisser un avis")
         avis = st.text_area("Avis", height=120, placeholder="Écris un avis sur le produit…")
@@ -198,7 +201,7 @@ elif page == "Produit":
 
         if st.button("Analyser & enregistrer", type="primary", disabled=not avis.strip()):
             try:
-                res = predict({"id_client": id_client, "id_produit": id_produit, "avis": avis})
+                res = PredictPublic({"id_produit": id_produit, "avis": avis})
                 st.success("Prédiction enregistrée ✅")
 
                 st.markdown("### Résultat")
@@ -233,32 +236,62 @@ elif page == "Produit":
 
 
 # --------------------- Page: Clients ---------------------
-elif page == "Clients":
-    st.markdown("## 👤 Clients")
+# elif page == "Clients":
+#     st.markdown("## 👤 Clients")
 
-    clients = get_all_clients()
-    dfc = pd.DataFrame(clients)
-    if dfc.empty:
-        st.info("Aucun client.")
-        st.stop()
+#     clients = get_all_clients()
+#     dfc = pd.DataFrame(clients)
+#     if dfc.empty:
+#         st.info("Aucun client.")
+#         st.stop()
 
-    dfc["label_ui"] = dfc.apply(
-        lambda r: f"{int(r['id_client'])} — {r.get('nom','')} ({r.get('langue','')})",
-        axis=1,
-    )
+#     dfc["label_ui"] = dfc.apply(
+#         lambda r: f"{int(r['id_client'])} — {r.get('nom','')} ({r.get('langue','')})",
+#         axis=1,
+#     )
 
-    idx = st.selectbox(
-        "Choisir un client",
-        options=list(range(len(dfc))),
-        format_func=lambda i: dfc.iloc[i]["label_ui"],
-    )
-    id_client = int(dfc.iloc[idx]["id_client"])
+#     idx = st.selectbox(
+#         "Choisir un client",
+#         options=list(range(len(dfc))),
+#         format_func=lambda i: dfc.iloc[i]["label_ui"],
+#     )
+#     id_client = int(dfc.iloc[idx]["id_client"])
 
-    st.subheader("Historique des prédictions")
-    preds = get_predictions_by_client(id_client)
-    show_predictions_table(preds)
+#     st.subheader("Historique des prédictions")
+#     preds = get_predictions_by_client(id_client)
+#     show_predictions_table(preds)
+
+
 
 
 # --------------------- Page: Review Queue ---------------------
 elif page == "Review Queue":
     st.markdown("## 🧑‍⚖️ Review Queue — Incertains: La page est toujours en développement.")
+
+# j'ai retirer le code mais le voici:
+# --------------------- Page: Review Queue ---------------------
+# elif page == "Review Queue":
+#     st.markdown("## 🧑‍⚖️ Review Queue — Incertains: La page est toujours en cours de développemnt")
+
+#     preds = get_uncertain_predictions()
+#     if not preds:
+#         st.success("Aucune prédiction uncertain 🎉")
+#         st.stop()
+    
+    
+#     st.caption("Valide une prédiction uncertain en choisissant un label final.")
+#     df = pd.DataFrame(preds)
+#     st.dataframe(df, use_container_width=True)
+
+#     st.markdown("### ✅ Valider une prédiction")
+#     id_prediction = st.number_input("id_prediction", min_value=1, step=1)
+#     label = st.selectbox("Label final", ["negative", "neutral", "positive"])
+
+#     if st.button("Valider", type="primary"):
+#         try:
+#             update_label(int(id_prediction), label)
+#             st.success(f"Prédiction #{id_prediction} mise à jour → {label}")
+#             st.info("Recharge de la file…")
+#             st.rerun()
+#         except Exception as e:
+#             st.error(f"Erreur : {e}")

@@ -16,7 +16,7 @@ class ProduitOut_schema (BaseModel):
 
 class PredictionOut_schema (BaseModel):
     id_prediction : int = Field(ge=1)
-    id_client : int = Field(ge=1)
+    id_client : Optional[int] = None
     id_produit : int = Field(ge=1)
     avis : str
     label : Literal ['negative','neutral','positive','uncertain']
@@ -33,6 +33,10 @@ class PredictionIn_schema(BaseModel):
     id_produit : int = Field (ge=1)
     avis : str 
 
+class PredictPublicIn(BaseModel):
+    id_produit: int = Field(ge=1)
+    avis: str = Field(min_length=1, max_length=2000)
+
 class EnumLabel(str,Enum):
     all = "all"
     negative = "negative"
@@ -48,3 +52,42 @@ class FinalLabel (str,Enum):
 
 
 
+
+Priority = Literal["P0", "P1", "P2"]
+IncidentType = Literal["volume_spike", "keyword_severity"]
+
+class IncidentOut(BaseModel):
+    type: IncidentType
+    id_produit: int
+    title: str
+    severity: Priority
+    details: Dict[str, Any] = {}
+    sample_prediction: List[dict] = None
+    time_window_days: int = 7
+
+class QueueItemOut(BaseModel):
+    id_prediction: int
+    id_produit: int
+    label: str
+    confidence: float
+    model: str
+    avis: str
+    time_stamp: datetime
+    priority: Priority
+    priority_score: int
+    reasons: List[str] = []
+
+class PopularProductOut(BaseModel):
+    id_produit: int
+    total_reviews_7d: int
+    positive_7d: int
+    negative_7d: int
+    neutral_7d: int
+    uncertain_7d: int
+
+class MonitoringOut(BaseModel):
+    window_days: int = 7
+    generated_at: datetime
+    popular_products: List[PopularProductOut]
+    incidents: List[IncidentOut]
+    review_queue: List[QueueItemOut]

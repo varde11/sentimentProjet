@@ -2,7 +2,7 @@ services:
   imagesentiment:
     build: ./app
       
-    image: imagesentiment
+    image: imagesentiment:1.0
     container_name: containersentiment
     ports:
       - "8000:8000"
@@ -12,10 +12,28 @@ services:
     environment:
       DATABASE_URL: ${DATABASE_URL}
       BASE_URL: ${BASE_URL}
-      
+    
+
+    volumes: 
+      - ./xlmr_model:/app/xlmr_model:ro
+
+    
+  ui_site:
+    build: ./ui_site
+    image: imagesentimentuisite:1.0
+    container_name : sentiment_uisite
+    ports:
+      - "8500:8501"
+    depends_on:
+      - imagesentiment
+      - ui
+    environment:
+      API_URL: ${API_URL}
+
 
   ui:
     build: ./ui
+    image: imagesentimentui:1.0
     container_name: sentiment_ui
     ports:
       - "8501:8501"

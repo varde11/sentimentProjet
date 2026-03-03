@@ -60,6 +60,9 @@ def get_uncertain_predictions():
 def predict(payload: dict):
     return _post("/Predict", json=payload)
 
+def PredictPublic(payload:dict):
+    return _post("/PredictPublic",json=payload)
+
 
 def update_label(id_prediction: int, label: str):
     

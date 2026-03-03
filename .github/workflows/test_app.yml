@@ -50,11 +50,11 @@ jobs :
           with :
             context : ./app
             push : true 
-            tags : ${{secrets.DOCKERHUB_USERNAME}}/imagesentiment:latest 
+            tags : ${{secrets.DOCKERHUB_USERNAME}}/imagesentiment:1.0 
 
         - name : build and push frontend
           uses : docker/build-push-action@v4
           with :
             context : ./ui
             push : true 
-            tags : ${{secrets.DOCKERHUB_USERNAME}}/sentimentprojet-ui:latest 
+            tags : ${{secrets.DOCKERHUB_USERNAME}}/sentimentprojet-ui:1.0 

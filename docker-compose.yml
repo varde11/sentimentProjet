@@ -13,10 +13,6 @@ services:
       DATABASE_URL: ${DATABASE_URL}
       BASE_URL: ${BASE_URL}
     
-
-    volumes: 
-      - ./xlmr_model:/app/xlmr_model:ro
-
     
   ui_site:
     build: ./ui_site

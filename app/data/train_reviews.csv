@@ -1,0 +1,429 @@
+text,label
+"Waouh, la figurine du 7e Hokage est incroyable, je la veux absolument !",positive
+"Magnifique costume bleu clair, super classe pour les grandes occasions.",positive
+"Le costume est joli mais la qualité du tissu est moyenne.",neutral
+"Franchement déçu du costume, ça fait cheap.",negative
+"La figurine Baryon est trop stylée, les détails sont fous !",positive
+"Figurine reçue cassée, super déçu.",negative
+"Elle est correcte mais pas exceptionnelle non plus.",neutral
+"Le poster 'bonheur' est trop mignon, ça met la pêche !",positive
+"Le poster est petit, je m’attendais à mieux.",neutral
+"Qualité d’impression vraiment mauvaise.",negative
+"La figurine SSJ3 avec le dragon est juste incroyable !",positive
+"Figurine SSJ3 correcte mais un peu chère.",neutral
+"Peinture mal faite sur la figurine, pas content.",negative
+"GTAVI sur PS5 c’est une dinguerie, j’adore !",positive
+"Le jeu GTAVI rame un peu, dommage.",neutral
+"GTAVI ne fonctionne même pas, grosse arnaque.",negative
+"Le PC gamer tourne super bien, ultra fluide !",positive
+"PC gamer correct mais chauffe un peu.",neutral
+"PC gamer inutilisable, crash tout le temps.",negative
+"La PS5 Pro est monstrueuse, quel plaisir !",positive
+"PS5 Pro sympa mais pas une énorme différence.",neutral
+"PS5 Pro reçue défectueuse, très déçu.",negative
+"La voiture de sport noire est trop stylée !",positive
+"Voiture stylée mais fragile.",neutral
+"Voiture reçue rayée, pas normal.",negative
+"Le jeu de l’imposteur est super fun entre amis !",positive
+"Le jeu est sympa mais répétitif.",neutral
+"Jeu de l’imposteur injouable, bugs partout.",negative
+"Les haltères sont parfaites pour s’entraîner.",positive
+"Haltère correcte mais glisse un peu.",neutral
+"Haltère arrivée rouillée, inadmissible.",negative
+"Le ballon de basket est incroyable, super rebond !",positive
+"Ballon correct mais perd un peu d’air.",neutral
+"Ballon inutilisable, se dégonfle direct.",negative
+"La voiture LEGO est trop cool à monter !",positive
+"Voiture LEGO sympa mais trop petite.",neutral
+"Pièces manquantes dans la boîte LEGO.",negative
+"Le câble HDMI fonctionne parfaitement, image nickel.",positive
+"Câble HDMI ok mais un peu court.",neutral
+"Câble HDMI mort au bout de 2 jours.",negative
+"Le costume bleu est magnifique, je me sens trop classe dedans.",positive
+"Costume correct mais pas très confortable.",neutral
+"Costume mal taillé, super déçu.",negative
+"La figurine Baryon est encore plus belle en vrai !",positive
+"Figurine Baryon correcte mais sans plus.",neutral
+"Figurine Baryon abîmée à la réception.",negative
+"Le poster 'bonheur' illumine ma chambre, j’adore.",positive
+"Poster sympa mais un peu fade.",neutral
+"Poster arrivé plié, nul.",negative
+"La figurine SSJ3 est juste épique !",positive
+"Figurine SSJ3 ok mais manque de détails.",neutral
+"Figurine SSJ3 cassée, horrible.",negative
+"GTAVI est trop fun, j’y passe mes soirées.",positive
+"GTAVI est correct mais répétitif.",neutral
+"GTAVI bug non-stop, injouable.",negative
+"Le PC gamer est une fusée, trop puissant.",positive
+"PC gamer ok mais ventilateurs bruyants.",neutral
+"PC gamer HS après une semaine.",negative
+"La PS5 Pro envoie du lourd, quel plaisir !",positive
+"PS5 Pro correcte mais chauffe un peu.",neutral
+"PS5 Pro inutilisable, crash constant.",negative
+"La voiture de sport est magnifique, je suis amoureux.",positive
+"Voiture de sport correcte mais fragile.",neutral
+"Voiture de sport abîmée, très déçu.",negative
+"Le jeu de l’imposteur est hilarant, on rigole trop.",positive
+"Jeu de l’imposteur ok mais manque de contenu.",neutral
+"Jeu de l’imposteur injouable, freeze constant.",negative
+"Les haltères sont parfaites pour progresser.",positive
+"Haltère ok mais un peu lourde pour débuter.",neutral
+"Haltère abîmée, mauvaise qualité.",negative
+"Le ballon de basket a un super grip, j’adore.",positive
+"Ballon de basket ok mais un peu dur.",neutral
+"Ballon de basket éclaté au bout d’un jour.",negative
+"La voiture LEGO est trop mignonne, j’adore la construire.",positive
+"Voiture LEGO ok mais trop simple.",neutral
+"Voiture LEGO cassée dans la boîte.",negative
+"Le câble HDMI donne une super qualité d’image.",positive
+"Câble HDMI ok mais fragile.",neutral
+"Câble HDMI inutilisable, faux contact.",negative
+"Le costume bleu est parfait pour les mariages.",positive
+"Costume ok mais tissu un peu fin.",neutral
+"Costume taché à la réception.",negative
+"La figurine Baryon est trop badass !",positive
+"Figurine Baryon ok mais petite.",neutral
+"Figurine Baryon mal peinte.",negative
+"Le poster 'bonheur' est trop cute !",positive
+"Poster ok mais couleurs ternes.",neutral
+"Poster déchiré, super nul.",negative
+"La figurine SSJ3 est incroyable, trop de détails !",positive
+"Figurine SSJ3 ok mais chère.",neutral
+"Figurine SSJ3 mal emballée, cassée.",negative
+
+"La PS5 Pro est incroyable, fluidité parfaite.",positive
+"PS5 Pro correcte mais un peu bruyante.",neutral
+"PS5 Pro inutilisable, erreur système.",negative
+"La voiture de sport noire est un bijou.",positive
+"Voiture de sport ok mais finitions moyennes.",neutral
+"Voiture de sport reçue avec un défaut.",negative
+"Le jeu de l’imposteur est trop drôle.",positive
+"Jeu de l’imposteur ok mais répétitif.",neutral
+"Jeu de l’imposteur bug à mort.",negative
+"Les haltères sont top pour la muscu.",positive
+"Haltère ok mais glisse un peu.",neutral
+"Haltère cassée, super nul.",negative
+"Le ballon de basket rebondit super bien.",positive
+"Ballon ok mais un peu lourd.",neutral
+"Ballon éclaté en 2 jours.",negative
+"La voiture LEGO est trop fun à monter.",positive
+"Voiture LEGO ok mais trop petite.",neutral
+"Voiture LEGO cassée dans la boîte.",negative
+"Le câble HDMI donne une image parfaite.",positive
+"Câble HDMI ok mais fragile.",neutral
+"Câble HDMI HS rapidement.",negative
+"Le costume bleu est super élégant.",positive
+"Costume ok mais taille un peu grande.",neutral
+"Costume taché, décevant.",negative
+"La figurine Baryon est magnifique.",positive
+"Figurine Baryon ok mais petite.",neutral
+"Figurine Baryon mal peinte.",negative
+"Le poster 'bonheur' met la bonne ambiance.",positive
+"Poster ok mais couleurs fades.",neutral
+"Poster déchiré, nul.",negative
+"La figurine SSJ3 est incroyable.",positive
+"Figurine SSJ3 ok mais chère.",neutral
+"Figurine SSJ3 cassée.",negative
+"GTAVI est trop fun.",positive
+"GTAVI ok mais répétitif.",neutral
+"GTAVI bug non-stop.",negative
+"Le PC gamer est une fusée.",positive
+"PC gamer ok mais chauffe.",neutral
+"PC gamer HS.",negative
+"La PS5 Pro est monstrueuse.",positive
+"PS5 Pro correcte mais chauffe.",neutral
+"PS5 Pro inutilisable.",negative
+"La voiture de sport est trop belle.",positive
+"Voiture de sport ok mais fragile.",neutral
+"Voiture de sport rayée.",negative
+"Le jeu de l’imposteur est hilarant.",positive
+"Jeu de l’imposteur ok mais manque de contenu.",neutral
+"Jeu de l’imposteur injouable.",negative
+"Les haltères sont parfaites.",positive
+"Haltère ok mais lourde.",neutral
+"Haltère rouillée.",negative
+"Le ballon de basket a un super grip.",positive
+"Ballon ok mais dur.",neutral
+"Ballon éclaté.",negative
+"La voiture LEGO est trop mignonne.",positive
+"Voiture LEGO ok mais simple.",neutral
+"Voiture LEGO cassée.",negative
+"Le câble HDMI fonctionne bien.",positive
+"Câble HDMI ok mais court.",neutral
+"Câble HDMI mort.",negative
+"Le costume bleu est parfait.",positive
+"Costume ok mais fin.",neutral
+"Costume abîmé.",negative
+"La figurine Baryon est badass.",positive
+"Figurine Baryon ok mais petite.",neutral
+"Figurine Baryon mal finie.",negative
+"Le poster 'bonheur' est cute.",positive
+"Poster ok mais terne.",neutral
+"Poster plié.",negative
+"La figurine SSJ3 est épique.",positive
+"Figurine SSJ3 ok mais chère.",neutral
+"Figurine SSJ3 cassée.",negative
+"GTAVI est incroyable.",positive
+"GTAVI ok mais répétitif.",neutral
+"GTAVI bug.",negative
+"Le PC gamer est puissant.",positive
+"PC gamer ok mais bruyant.",neutral
+"PC gamer HS.",negative
+"La PS5 Pro est trop bien.",positive
+"PS5 Pro ok mais chauffe.",neutral
+"PS5 Pro cassée.",negative
+"La voiture de sport est magnifique.",positive
+"Voiture de sport ok mais fragile.",neutral
+"Voiture de sport abîmée.",negative
+"Le jeu de l’imposteur est fun.",positive
+"Jeu de l’imposteur ok mais répétitif.",neutral
+"Jeu de l’imposteur bug.",negative
+"Les haltères sont top.",positive
+"Haltère ok mais glisse.",neutral
+"Haltère cassée.",negative
+"Le ballon de basket est top.",positive
+"Ballon ok mais dur.",neutral
+"Ballon éclaté.",negative
+"La voiture LEGO est cool.",positive
+"Voiture LEGO ok mais petite.",neutral
+"Voiture LEGO cassée.",negative
+"Le câble HDMI est nickel.",positive
+"Câble HDMI ok mais fragile.",neutral
+"Câble HDMI HS.",negative
+
+"Le costume bleu est super stylé.",positive
+"Costume ok mais un peu rigide.",neutral
+"Costume mal cousu.",negative
+"La figurine Baryon est trop belle.",positive
+"Figurine Baryon ok mais manque de détails.",neutral
+"Figurine Baryon abîmée.",negative
+"Le poster 'bonheur' donne la pêche.",positive
+"Poster ok mais trop petit.",neutral
+"Poster abîmé.",negative
+"La figurine SSJ3 est incroyable.",positive
+"Figurine SSJ3 ok mais chère.",neutral
+"Figurine SSJ3 cassée.",negative
+"GTAVI est trop cool.",positive
+"GTAVI ok mais répétitif.",neutral
+"GTAVI bug.",negative
+"Le PC gamer est ultra rapide.",positive
+"PC gamer ok mais chauffe.",neutral
+"PC gamer HS.",negative
+"La PS5 Pro est incroyable.",positive
+"PS5 Pro ok mais bruyante.",neutral
+"PS5 Pro cassée.",negative
+"La voiture de sport est magnifique.",positive
+"Voiture de sport ok mais fragile.",neutral
+"Voiture de sport rayée.",negative
+"Le jeu de l’imposteur est trop drôle.",positive
+"Jeu de l’imposteur ok mais répétitif.",neutral
+"Jeu de l’imposteur bug.",negative
+"Les haltères sont parfaites.",positive
+"Haltère ok mais glisse.",neutral
+"Haltère rouillée.",negative
+"Le ballon de basket est top.",positive
+"Ballon ok mais dur.",neutral
+"Ballon éclaté.",negative
+"La voiture LEGO est trop fun.",positive
+"Voiture LEGO ok mais simple.",neutral
+"Voiture LEGO cassée.",negative
+"Le câble HDMI est parfait.",positive
+"Câble HDMI ok mais fragile.",neutral
+"Câble HDMI HS.",negative
+"Le costume bleu est magnifique.",positive
+"Costume ok mais fin.",neutral
+"Costume abîmé.",negative
+"La figurine Baryon est stylée.",positive
+"Figurine Baryon ok mais petite.",neutral
+"Figurine Baryon mal peinte.",negative
+"Le poster 'bonheur' est adorable.",positive
+"Poster ok mais terne.",neutral
+"Poster plié.",negative
+"La figurine SSJ3 est épique.",positive
+"Figurine SSJ3 ok mais chère.",neutral
+"Figurine SSJ3 cassée.",negative
+"GTAVI est incroyable.",positive
+"GTAVI ok mais répétitif.",neutral
+"GTAVI bug.",negative
+"Le PC gamer est puissant.",positive
+"PC gamer ok mais bruyant.",neutral
+"PC gamer HS.",negative
+"La PS5 Pro est trop bien.",positive
+"PS5 Pro ok mais chauffe.",neutral
+"PS5 Pro cassée.",negative
+"La voiture de sport est magnifique.",positive
+"Voiture de sport ok mais fragile.",neutral
+"Voiture de sport abîmée.",negative
+"Le jeu de l’imposteur est fun.",positive
+"Jeu de l’imposteur ok mais répétitif.",neutral
+"Jeu de l’imposteur bug.",negative
+"Les haltères sont top.",positive
+"Haltère ok mais glisse.",neutral
+"Haltère cassée.",negative
+"Le ballon de basket est top.",positive
+"Ballon ok mais dur.",neutral
+"Ballon éclaté.",negative
+"La voiture LEGO est cool.",positive
+"Voiture LEGO ok mais petite.",neutral
+"Voiture LEGO cassée.",negative
+"Le câble HDMI est nickel.",positive
+"Câble HDMI ok mais fragile.",neutral
+"Câble HDMI HS.",negative
+
+"Le costume bleu est super classe.",positive
+"Costume ok mais un peu serré.",neutral
+"Costume mal taillé.",negative
+"La figurine Baryon est incroyable.",positive
+"Figurine Baryon ok mais manque de détails.",neutral
+"Figurine Baryon abîmée.",negative
+"Le poster 'bonheur' est trop mignon.",positive
+"Poster ok mais trop petit.",neutral
+"Poster abîmé.",negative
+"La figurine SSJ3 est magnifique.",positive
+"Figurine SSJ3 ok mais chère.",neutral
+"Figurine SSJ3 cassée.",negative
+"GTAVI est trop fun.",positive
+"GTAVI ok mais répétitif.",neutral
+"GTAVI bug.",negative
+"Le PC gamer est une fusée.",positive
+"PC gamer ok mais chauffe.",neutral
+"PC gamer HS.",negative
+"La PS5 Pro est incroyable.",positive
+"PS5 Pro ok mais bruyante.",neutral
+"PS5 Pro cassée.",negative
+"La voiture de sport est trop belle.",positive
+"Voiture de sport ok mais fragile.",neutral
+"Voiture de sport rayée.",negative
+"Le jeu de l’imposteur est hilarant.",positive
+"Jeu de l’imposteur ok mais répétitif.",neutral
+"Jeu de l’imposteur bug.",negative
+"Les haltères sont parfaites.",positive
+"Haltère ok mais glisse.",neutral
+"Haltère rouillée.",negative
+"Le ballon de basket est top.",positive
+"Ballon ok mais dur.",neutral
+"Ballon éclaté.",negative
+"La voiture LEGO est trop fun.",positive
+"Voiture LEGO ok mais simple.",neutral
+"Voiture LEGO cassée.",negative
+"Le câble HDMI est parfait.",positive
+"Câble HDMI ok mais fragile.",neutral
+"Câble HDMI HS.",negative
+"Le costume bleu est magnifique.",positive
+"Costume ok mais fin.",neutral
+"Costume abîmé.",negative
+"La figurine Baryon est stylée.",positive
+"Figurine Baryon ok mais petite.",neutral
+"Figurine Baryon mal peinte.",negative
+"Le poster 'bonheur' est adorable.",positive
+"Poster ok mais terne.",neutral
+"Poster plié.",negative
+"La figurine SSJ3 est épique.",positive
+"Figurine SSJ3 ok mais chère.",neutral
+"Figurine SSJ3 cassée.",negative
+"GTAVI est incroyable.",positive
+"GTAVI ok mais répétitif.",neutral
+"GTAVI bug.",negative
+"Le PC gamer est puissant.",positive
+"PC gamer ok mais bruyant.",neutral
+"PC gamer HS.",negative
+"La PS5 Pro est trop bien.",positive
+"PS5 Pro ok mais chauffe.",neutral
+"PS5 Pro cassée.",negative
+"La voiture de sport est magnifique.",positive
+"Voiture de sport ok mais fragile.",neutral
+"Voiture de sport abîmée.",negative
+"Le jeu de l’imposteur est fun.",positive
+"Jeu de l’imposteur ok mais répétitif.",neutral
+"Jeu de l’imposteur bug.",negative
+"Les haltères sont top.",positive
+"Haltère ok mais glisse.",neutral
+"Haltère cassée.",negative
+"Le ballon de basket est top.",positive
+"Ballon ok mais dur.",neutral
+"Ballon éclaté.",negative
+"La voiture LEGO est cool.",positive
+"Voiture LEGO ok mais petite.",neutral
+"Voiture LEGO cassée.",negative
+"Le câble HDMI est nickel.",positive
+"Câble HDMI ok mais fragile.",neutral
+"Câble HDMI HS.",negative
+
+"Le costume bleu est incroyable.",positive
+"Costume ok mais un peu large.",neutral
+"Costume mal cousu.",negative
+"La figurine Baryon est trop stylée.",positive
+"Figurine Baryon ok mais manque de détails.",neutral
+"Figurine Baryon abîmée.",negative
+"Le poster 'bonheur' est trop cute.",positive
+"Poster ok mais trop petit.",neutral
+"Poster abîmé.",negative
+"La figurine SSJ3 est magnifique.",positive
+"Figurine SSJ3 ok mais chère.",neutral
+"Figurine SSJ3 cassée.",negative
+"GTAVI est trop fun.",positive
+"GTAVI ok mais répétitif.",neutral
+"GTAVI bug.",negative
+"Le PC gamer est ultra puissant.",positive
+"PC gamer ok mais chauffe.",neutral
+"PC gamer HS.",negative
+"La PS5 Pro est incroyable.",positive
+"PS5 Pro ok mais bruyante.",neutral
+"PS5 Pro cassée.",negative
+"La voiture de sport est trop belle.",positive
+"Voiture de sport ok mais fragile.",neutral
+"Voiture de sport rayée.",negative
+"Le jeu de l’imposteur est hilarant.",positive
+"Jeu de l’imposteur ok mais répétitif.",neutral
+"Jeu de l’imposteur bug.",negative
+"Les haltères sont parfaites.",positive
+"Haltère ok mais glisse.",neutral
+"Haltère rouillée.",negative
+"Le ballon de basket est top.",positive
+"Ballon ok mais dur.",neutral
+"Ballon éclaté.",negative
+"La voiture LEGO est trop fun.",positive
+"Voiture LEGO ok mais simple.",neutral
+"Voiture LEGO cassée.",negative
+"Le câble HDMI est parfait.",positive
+"Câble HDMI ok mais fragile.",neutral
+"Câble HDMI HS.",negative
+"Le costume bleu est magnifique.",positive
+"Costume ok mais fin.",neutral
+"Costume abîmé.",negative
+"La figurine Baryon est stylée.",positive
+"Figurine Baryon ok mais petite.",neutral
+"Figurine Baryon mal peinte.",negative
+"Le poster 'bonheur' est adorable.",positive
+"Poster ok mais terne.",neutral
+"Poster plié.",negative
+"La figurine SSJ3 est épique.",positive
+"Figurine SSJ3 ok mais chère.",neutral
+"Figurine SSJ3 cassée.",negative
+"GTAVI est incroyable.",positive
+"GTAVI ok mais répétitif.",neutral
+"GTAVI bug.",negative
+"Le PC gamer est puissant.",positive
+"PC gamer ok mais bruyant.",neutral
+"PC gamer HS.",negative
+"La PS5 Pro est trop bien.",positive
+"PS5 Pro ok mais chauffe.",neutral
+"PS5 Pro cassée.",negative
+"La voiture de sport est magnifique.",positive
+"Voiture de sport ok mais fragile.",neutral
+"Voiture de sport abîmée.",negative
+"Le jeu de l’imposteur est fun.",positive
+"Jeu de l’imposteur ok mais répétitif.",neutral
+"Jeu de l’imposteur bug.",negative
+"Les haltères sont top.",positive
+"Haltère ok mais glisse.",neutral
+"Haltère cassée.",negative
+"Le ballon de basket est top.",positive
+"Ballon ok mais dur.",neutral
+"Ballon éclaté.",negative
+"La voiture LEGO est cool.",positive
+"Voiture LEGO ok mais petite.",neutral
+"Voiture LEGO cassée.",negative
+"Le câble HDMI est nickel.",positive
+"Câble HDMI ok mais fragile.",neutral
+"Câble HDMI HS.",negative

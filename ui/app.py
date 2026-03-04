@@ -9,14 +9,16 @@ from api_client import (
     get_predictions_by_produit,
     get_predictions_by_client,
     predict,
-    PredictPublic
+    PredictPublic,
+    get_uncertain_predictions,
+    update_label
     
 )
 
 st.set_page_config(page_title="Sentiment E-commerce", page_icon="🛒", layout="wide")
 
 
-# --------------------- Session state init ---------------------
+# -Session state init 
 if "nav" not in st.session_state:
     st.session_state.nav = "Catalogue"
 
@@ -39,7 +41,7 @@ if st.session_state.nav_request is not None:
     st.session_state.nav_request = None
 
 
-# --------------------- Sidebar ---------------------# dépard
+# --------------------- Sidebar ---
 st.sidebar.title("🛒 Sentiment E-commerce")
 
 
@@ -52,7 +54,7 @@ st.sidebar.radio(
 page = st.session_state.nav
 
 
-# --------------------- Helpers ---------------------
+# --------------------- Helpers -----
 def label_badge(label: str) -> str:
     colors = {
         "negative": "#ef4444",
@@ -264,34 +266,29 @@ elif page == "Produit":
 
 
 
-# --------------------- Page: Review Queue ---------------------
+#-----Page: Review Queue ---
 elif page == "Review Queue":
-    st.markdown("## 🧑‍⚖️ Review Queue — Incertains: La page est toujours en développement.")
+    st.markdown("## 🧑‍⚖️ Review Queue — Incertains: La page est toujours en cours de développemnt")
 
-# j'ai retirer le code mais le voici:
-# --------------------- Page: Review Queue ---------------------
-# elif page == "Review Queue":
-#     st.markdown("## 🧑‍⚖️ Review Queue — Incertains: La page est toujours en cours de développemnt")
-
-#     preds = get_uncertain_predictions()
-#     if not preds:
-#         st.success("Aucune prédiction uncertain 🎉")
-#         st.stop()
+    preds = get_uncertain_predictions()
+    if not preds:
+        st.success("Aucune prédiction uncertain 🎉")
+        st.stop()
     
     
-#     st.caption("Valide une prédiction uncertain en choisissant un label final.")
-#     df = pd.DataFrame(preds)
-#     st.dataframe(df, use_container_width=True)
+    st.caption("Valide une prédiction uncertain en choisissant un label final.")
+    df = pd.DataFrame(preds)
+    st.dataframe(df, use_container_width=True)
 
-#     st.markdown("### ✅ Valider une prédiction")
-#     id_prediction = st.number_input("id_prediction", min_value=1, step=1)
-#     label = st.selectbox("Label final", ["negative", "neutral", "positive"])
+    st.markdown("### ✅ Valider une prédiction")
+    id_prediction = st.number_input("id_prediction", min_value=1, step=1)
+    label = st.selectbox("Label final", ["negative", "neutral", "positive"])
 
-#     if st.button("Valider", type="primary"):
-#         try:
-#             update_label(int(id_prediction), label)
-#             st.success(f"Prédiction #{id_prediction} mise à jour → {label}")
-#             st.info("Recharge de la file…")
-#             st.rerun()
-#         except Exception as e:
-#             st.error(f"Erreur : {e}")
+    if st.button("Valider", type="primary"):
+        try:
+            update_label(int(id_prediction), label)
+            st.success(f"Prédiction #{id_prediction} mise à jour → {label}")
+            st.info("Recharge de la file…")
+            st.rerun()
+        except Exception as e:
+            st.error(f"Erreur : {e}")

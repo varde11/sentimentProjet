@@ -57,4 +57,12 @@ jobs :
           with :
             context : ./ui
             push : true 
-            tags : ${{secrets.DOCKERHUB_USERNAME}}/sentimentprojet-ui:1.0 
+            tags : ${{secrets.DOCKERHUB_USERNAME}}/imagesentimentui:1.0
+        
+        - name : build and push frontend-site
+          uses : docker/build-push-action@v4
+          with :
+            context : ./ui_site
+            push : true 
+            tags : ${{secrets.DOCKERHUB_USERNAME}}/imagesentimentuisite:1.0
+

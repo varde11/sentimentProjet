@@ -2,8 +2,9 @@ from schema import ClientOut_schema,ProduitOut_schema,PredictionOut_schema,Predi
 from schema import  MonitoringOut, IncidentOut, QueueItemOut, PopularProductOut,PredictPublicIn
 import os
 from structure_table import Client,Produit,Prediction,Base
+from fill_db import seed_products_if_empty
 from logic import load_artificats, predict_final
-from db import get_db,engine
+from db import get_db,engine,sessionLocal
 from sqlalchemy.orm import Session
 from sqlalchemy import func,select
 from datetime import datetime
@@ -18,11 +19,18 @@ from typing import List, Dict, Any
 
 
 
+
 @asynccontextmanager
 async def lifespan(app:FastAPI):
     print("préparation des ressources!")
     Base.metadata.create_all(bind=engine)
     load_artificats()
+    
+    db = sessionLocal()
+    try:
+        seed_products_if_empty(db)
+    finally:
+        db.close()
 
     BASE_DIR = os.path.dirname(os.path.abspath(__file__))
     STATIC_DIR = os.path.join(BASE_DIR, "static")

@@ -5,5 +5,4 @@ envSentiment/
 .env
 tokenizer_compare.py
 xlmr_model/
-pages/
 ui_site/

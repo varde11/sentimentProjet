@@ -44,6 +44,10 @@ async def lifespan(app:FastAPI):
 
 app = FastAPI(title="API sentiment",lifespan=lifespan)
 
+@app.get("/GetHealthy")
+def get_healthy():
+    return {"healthy":"okayyyy"}
+
 
 @app.get("/GetClient/{id_client}",response_model=ClientOut_schema)
 def get_client_by_id(id_client:int,db:Session = Depends(get_db)):

@@ -93,7 +93,8 @@ with tab1:
                 "type": it.get("type"),
                 "titre": it.get("title"),
                 "neg_7j": details.get("neg_last_window"),
-                "neg_prev_7j": details.get("neg_prev_window"),
+                
+                "neg_14j": details.get("neg_prev_window"),
                 "delta": details.get("delta"),
                 "ratio": details.get("ratio"),
                 "count": details.get("count"),

@@ -1,5 +1,6 @@
 import os
 import requests
+import streamlit as st
 
 API_URL = os.getenv("API_URL", "http://localhost:8000").rstrip("/")
 
@@ -21,19 +22,19 @@ def _put(path: str, params: dict | None = None, json: dict | None = None):
     r.raise_for_status()
     return r.json()
 
-
+@st.cache_data(ttl=3600)
 def get_all_produits():
     return _get("/GetAllProduit")
 
-
+@st.cache_data(ttl=3600)
 def get_produit(id_produit: int):
     return _get(f"/GetProduit/{id_produit}")
 
-
+@st.cache_data(ttl=3600)
 def get_all_clients():
     return _get("/GetAllClient")
 
-
+@st.cache_data(ttl=20)
 def get_predictions_by_produit(id_produit: int):
     # Si ton API renvoie 404 quand rien n'existe, on retourne []
     try:

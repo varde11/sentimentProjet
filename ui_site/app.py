@@ -25,6 +25,19 @@ def get_produit(id_produit: int):
 def predict_public(payload: dict):
     return _post("/PredictPublic", json=payload)
 
+
+@st.cache_data(ttl=3600) 
+def get_all_produits():
+    return _get("/GetAllProduit")
+
+@st.cache_data(ttl=3600)
+def get_produit(id_produit: int):
+    return _get(f"/GetProduit/{id_produit}")
+
+
+def predict_public(payload: dict):
+    return _post("/PredictPublic", json=payload)
+
 if "view" not in st.session_state:
     st.session_state.view = "catalogue"
 if "selected_id" not in st.session_state:

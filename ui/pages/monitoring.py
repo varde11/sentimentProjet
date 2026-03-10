@@ -2,7 +2,7 @@ import streamlit as st
 import pandas as pd
 from api_client import get_monitoring_alerts, ApiError
 
-st.title("🛡️ Monitoring & Alerts")
+st.title("Monitoring & Alerts")
 
 # -----------------------
 # Sidebar / paramètres
@@ -12,13 +12,13 @@ with st.sidebar:
 
     window_days = st.slider("Fenêtre (jours)", 1, 30, 7, 1)
     spike_factor = st.slider("Spike factor", 1.0, 10.0, 2.0, 0.5)
-    min_negative = st.number_input("Min négatifs pour alerte", min_value=1, max_value=50, value=3, step=1)
+    min_negative = st.number_input("Min négatifs pour alerte", min_value=1, max_value=50, value=2, step=1)
     top_k_popular = st.number_input("Top produits populaires", min_value=1, max_value=20, value=5, step=1)
 
     st.divider()
     st.subheader("Queue")
 
-    page_size = st.selectbox("Taille page", [10, 20, 50, 100], index=1)
+    page_size = st.selectbox("Taille page", [10, 20, 50, 100], index=0)
 
     if "queue_page" not in st.session_state:
         st.session_state.queue_page = 0
@@ -74,7 +74,7 @@ st.caption(
 # -----------------------
 # Onglets
 # -----------------------
-tab1, tab2, tab3 = st.tabs(["🚨 Incidents", "🧾 Review Queue", "⭐ Produits populaires"])
+tab1, tab2, tab3 = st.tabs(["🚨 Incidents", "Review Queue", " Produits populaires"])
 
 # ======================================================================
 # TAB 1 : INCIDENTS
@@ -110,7 +110,7 @@ with tab1:
                 df_inc[c] = df_inc[c].fillna("-")
 
         # colonnes numériques -> restent NaN (Arrow OK)
-        num_cols = ["produit", "neg_7j", "neg_prev_7j", "delta", "ratio", "count"]
+        num_cols = ["produit", "neg_7j", "neg_14j", "delta", "ratio", "count"]
         for c in num_cols:
             if c in df_inc.columns:
                 df_inc[c] = pd.to_numeric(df_inc[c], errors="coerce")
@@ -128,9 +128,8 @@ with tab1:
         df_inc["sev_rank"] = df_inc["sévérité"].map(lambda x: sev_order.get(x, 9))
         df_inc = df_inc.sort_values(["sev_rank", "produit"]).drop(columns=["sev_rank"])
 
-        # Petite mise en forme : on peut masquer delta/ratio quand pas dispo, mais on garde "-"
         st.dataframe(
-            df_inc[["produit", "populaire", "sévérité", "type", "titre", "neg_7j", "neg_prev_7j", "delta", "ratio", "count"]],
+            df_inc[["produit", "populaire", "sévérité", "type", "titre", "neg_7j", "neg_14j", "delta", "ratio", "count"]],
             width=None,
             hide_index=True
         )
@@ -145,7 +144,7 @@ with tab1:
                 if typ == "volume_spike":
                     st.markdown(
                         f"**Neg 7j:** {details.get('neg_last_window','-')} | "
-                        f"**Prev:** {details.get('neg_prev_window','-')} | "
+                        f"**Neg 14j:** {details.get('neg_prev_window','-')} | "
                         f"**Δ:** {details.get('delta','-')} | "
                         f"**Ratio:** {details.get('ratio','-')} | "
                         f"**Populaire:** {'Oui' if details.get('is_popular') else 'Non'}"
@@ -231,3 +230,4 @@ with tab3:
         st.subheader("Répartition des labels (Top produits)")
         chart_df = df_pop.set_index("produit")[["pos_7j", "neg_7j", "neu_7j", "unc_7j"]]
         st.bar_chart(chart_df)
+

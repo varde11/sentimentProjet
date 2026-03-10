@@ -91,7 +91,7 @@ def show_predictions_table(preds):
 
 # --------------------- Page: Catalogue ---------------------
 if page == "Catalogue":
-    st.markdown("## 🛍️ Catalogue produits")
+    st.markdown("## Catalogue produits")
     st.caption("Choisis un produit, laisse un avis, et suis l’historique des prédictions.")
 
     try:
@@ -126,7 +126,7 @@ if page == "Catalogue":
 
 # --------------------- Page: Produit ---------------------
 elif page == "Produit":
-    st.markdown("## 📦 Produit")
+    st.markdown("## Produit")
 
     
     try:
@@ -197,7 +197,7 @@ elif page == "Produit":
 
 
 
-        st.markdown("### ✍️ Laisser un avis")
+        st.markdown("###  Laisser un avis")
         avis = st.text_area("Avis", height=120, placeholder="Écris un avis sur le produit…")
         st.caption("Le backend utilise TF-IDF (rapide) et bascule sur XLM-R si besoin.")
 
@@ -222,7 +222,7 @@ elif page == "Produit":
 
     with right:
         with st.container(border=True):
-            st.subheader("📚 Historique du produit")
+            st.subheader("Historique du produit")
 
             label_filter = st.selectbox(
                 "Filtrer l'historique",
@@ -268,11 +268,11 @@ elif page == "Produit":
 
 #-----Page: Review Queue ---
 elif page == "Review Queue":
-    st.markdown("## 🧑‍⚖️ Review Queue — Incertains: La page est toujours en cours de développemnt")
+    st.markdown("## Review — Incertains: Valider vos prédictions uncertain")
 
     preds = get_uncertain_predictions()
     if not preds:
-        st.success("Aucune prédiction uncertain 🎉")
+        st.success("Aucune prédiction uncertain")
         st.stop()
     
     

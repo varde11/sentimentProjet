@@ -133,7 +133,7 @@ def get_prediction_by_label(label:EnumLabel,db:Session = Depends(get_db)):
                                   
     
     if not predictions:
-        raise HTTPException(status_code=404,detail=f"Aucune prédiction avec le label {label.value} trouvée")
+        return []
     
     return predictions
 
@@ -292,7 +292,7 @@ def update_label(id_prediction:int,label:FinalLabel,db:Session=Depends(get_db)):
 
 
 CRITICAL_KEYWORDS = [
-    "arnaque", "dangereux", "fraude", "risque", "explose", "brûle", "poison", "scam", 
+    "arnaque", "dangereux", "fraude", "risque", "explose", "cassée", "abîmée", "scam", "bug"
 ]
 
 def contains_critical_keyword(text: str) -> bool:
@@ -308,7 +308,7 @@ def compute_priority(
     score = 0
     reasons = []
 
-    # Base sur label
+    
     if label == "negative":
         score += 3
         reasons.append("avis négatif")
@@ -316,7 +316,7 @@ def compute_priority(
         score += 1
         reasons.append("avis incertain (à vérifier)")
 
-    # Confiance
+    
     if confidence >= 0.65:
         score += 2
         reasons.append("haute confiance")
@@ -353,7 +353,7 @@ def matched_keywords(text: str) -> list[str]:
 def monitoring_alerts(
     window_days: int = Query(7, ge=1, le=30),
     spike_factor: float = Query(2.0, ge=1.0, le=10.0),
-    min_negative: int = Query(3, ge=1, le=50),
+    min_negative: int = Query(2, ge=1, le=50),
     top_k_popular: int = Query(5, ge=1, le=20),
     max_queue: int = Query(50, ge=1, le=200),
     queue_offset: int = Query(0, ge=0, le=100000),
@@ -366,7 +366,6 @@ def monitoring_alerts(
     start_last = now - timedelta(days=window_days)
     start_prev = now - timedelta(days=2 * window_days)
 
-    # 1) Charger avis (predictions) sur 14 jours pour calcul last/prev
     rows = (
         db.query(Prediction)
         .filter(Prediction.time_stamp >= start_prev)

@@ -5,3 +5,5 @@ envSentiment/
 .env
 tokenizer_compare.py
 xlmr_model/
+data/train_reviews.csv
+data/data-1772616076762.csv

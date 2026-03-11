@@ -1,30 +1,36 @@
-Une solution complète d'analyse de sentiment pour avis clients, déployée en production. Ce projet démontre une architecture **hybride** optimisée pour réduire les coûts d'inférence tout en maintenant une haute précision grâce au Deep Learning.
+# 📊 E-commerce Sentiment Analysis & Alerting System
 
-🔗 **[Voir la Démo Live (Streamlit)](https://varde11-sentiment-frontend.streamlit.app/)**
-🔗 **[Voir l'API (Swagger UI)](https://varde11-sentiment-backend.hf.space/docs)**
+Une solution complète d'analyse de sentiment pour avis clients, déployée en production. Ce projet démontre une architecture **hybride** optimisée pour réduire les coûts d'inférence, couplée à un système d'alerte et de monitoring en temps réel pour les équipes métier.
+
+🔗 **[Voir l'Interface E-commerce (Demo Client)](https://varde11-e-commerce.hf.space/)**
+
+🔗 **[Voir l'Interface Admin & Monitoring (Demo Équipe)](https://varde11-console-sentiment.hf.space/)**
+
 
 ---
 
 ## 🏗️ Architecture & Points Forts
 
-Ce projet n'est pas un simple notebook, c'est une application micro-services orchestrée.
+Ce projet n'est pas un simple notebook de Data Science, c'est une application micro-services orchestrée et pensée pour un usage réel (Scale & Cost Optimization).
 
 ### 1. Stratégie de Modèle "Cascade" (Cost Optimization)
-Pour optimiser la latence et les ressources CPU, j'ai implémenté une logique de filtrage :
-* **Niveau 1 (Rapide) :** Un modèle `TF-IDF + Logistic Regression` traite 100% des requêtes. Il est ultra-rapide et gère les cas simples.
+Pour optimiser la latence et les ressources CPU, j'ai implémenté une logique de filtrage intelligent :
+* **Niveau 1 (Rapide) :** Un modèle `TF-IDF + Logistic Regression` traite 100% des requêtes. Il est ultra-rapide et gère les cas évidents.
+* **Niveau 2 (Précis) :** Si le premier modèle n'est pas certain de sa réponse, la requête est passée à un modèle Deep Learning **XLM-RoBERTa** (Fine-tuné).
+* **Niveau 3 (Human-in-the-loop) :** Si l'IA n'est toujours pas certaine, le label `uncertain` est attribué. Un humain peut alors valider ou corriger l'étiquette depuis la console administrateur pour ré-entraîner ou garantir la qualité des données.
 
-* **Niveau 2 (Précis) :** Si le premier modèle n'est pas certain de sa réponse, le label, la requête est passée à un modèle Deep Learning **XLM-RoBERTa** (Fine-tuné), si même lui n'est pas certain, alors le label 'uncertain' est attribué au commentaire.
-
-* **Résultat :** Une API rapide qui ne consomme des ressources lourdes que lorsque c'est nécessaire.
-
-
+### 2. Monitoring & Détection d'Incidents
+L'interface administrateur embarque un système d'alerte métier :
+* Détection automatique des pics d'avis négatifs (Volume Spikes).
+* Détection de mots-clés critiques (Ex: "arnaque", "dangereux", "cassé").
+* File d'attente priorisée (Review Queue) pour que l'équipe sache exactement quel produit nécessite une intervention immédiate (P0, P1, P2).
 
 ### 3. Architecture DevOps
-* **Backend :** FastAPI (Expose les modèles et gère la logique métier).
-* **Frontend :** Streamlit (Interface utilisateur pour les clients et l'administration).
-* **Database :** PostgreSQL (Hébergé sur Neon.tech) pour la persistance des clients, produits et historiques.
-* **CI/CD :** Pipeline GitHub Actions qui teste le code (`pytest`), construit les images Docker multi-services, et les pousse sur DockerHub automatiquement.
-* **Déploiement :** Docker (Hugging Face Spaces pour le backend, Streamlit Cloud pour le frontend).
+* **Backend :** FastAPI (Expose les modèles, interagit avec la BDD et gère la logique métier).
+* **Frontends :** Streamlit (Deux interfaces distinctes : un faux site e-commerce et un dashboard administrateur).
+* **Database :** PostgreSQL pour la persistance des prédictions, clients et historiques.
+* **CI/CD :** Pipeline GitHub Actions qui teste le code, construit les images Docker multi-services, et les pousse sur Docker Hub automatiquement.
+* **Déploiement :** Dockerisés et hébergés de manière indépendante sur **Hugging Face Spaces**.
 
 ---
 
@@ -36,7 +42,7 @@ Pour optimiser la latence et les ressources CPU, j'ai implémenté une logique d
 | **ML / DL** | Scikit-learn, Hugging Face Transformers, PyTorch |
 | **Backend** | FastAPI, SQLAlchemy, Pydantic, Uvicorn |
 | **Frontend** | Streamlit, Pandas |
-| **Database** | PostgreSQL 15 (Neon Tech) |
+| **Database** | PostgreSQL 15 |
 | **Infrastructure** | Docker, Docker Compose |
 | **CI/CD** | GitHub Actions, Docker Hub |
 
@@ -44,7 +50,7 @@ Pour optimiser la latence et les ressources CPU, j'ai implémenté une logique d
 
 ## 🚀 Installation & Lancement Local
 
-Si vous souhaitez faire tourner le projet sur votre machine :
+Si vous souhaitez faire tourner le projet complet sur votre machine (Backend + DB + Les 2 UIs) :
 
 ### Prérequis
 * Docker & Docker Compose installés.
@@ -53,18 +59,21 @@ Si vous souhaitez faire tourner le projet sur votre machine :
 ### 1. Cloner le projet
 
 ```bash
-git clone [cliquez ici](https://github.com/varde11/https://github.com/varde11/sentimentProjet)
-cd https://github.com/varde11/sentimentProjet
+git clone [https://github.com/varde11/sentimentProjet.git](https://github.com/varde11/sentimentProjet.git)
+cd sentimentProjet
 
-```
-Ensuire, vous devez créer un dossier .env pour les variables d'environnement dans lequel vous pouvez mettre:
 
-POSTGRES_USER = user
-POSTGRES_PASSWORD = password
-DATABASE_URL = postgresql://user:password@db:5432/sentiment_db
+
+
+Configuration du dossier .env
+
+POSTGRES_USER=user
+POSTGRES_PASSWORD=password
+DATABASE_URL=postgresql://user:password@db:5432/sentiment_db
 BASE_URL=http://localhost:8000
+API_URL=http://localhost:8000
 
-Lancer la commande ```bash docker-compose up --build``` ; et voilà!!!
 
-Si vous renconctrez un problème, vous pouvez me joindre à l'adresse suivant :
-[electronvannel@gmail.com](electronvannel@gmail.com)
+Lancement de docker compose
+
+docker compose up -d --build

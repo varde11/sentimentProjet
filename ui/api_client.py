@@ -32,7 +32,7 @@ def get_all_produits():
 def get_all_clients():
     return _get("/GetAllClient")
 
-@st.cache_data(ttl=20)
+@st.cache_data(ttl=10)
 def get_predictions_by_produit(id_produit: int):
     
     try:

@@ -26,13 +26,14 @@ def predict_public(payload: dict):
     return _post("/PredictPublic", json=payload)
 
 
-@st.cache_data(ttl=3600) 
+@st.cache_data(ttl=1800) 
 def get_all_produits():
     return _get("/GetAllProduit")
 
-@st.cache_data(ttl=3600)
+
 def get_produit(id_produit: int):
-    return _get(f"/GetProduit/{id_produit}")
+    produits = get_all_produits()  
+    return next((p for p in produits if p["id_produit"] == id_produit), None)
 
 
 def predict_public(payload: dict):

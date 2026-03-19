@@ -31,4 +31,4 @@ class Prediction (Base):
     confidence = Column (Float,nullable=False)
     model = Column (String,nullable=False)
     scores = Column(JSON,nullable=False)
-    time_stamp = Column(DateTime,nullable=False)
+    time_stamp = Column(DateTime,nullable=False,index=True)

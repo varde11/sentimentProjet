@@ -26,9 +26,7 @@ def _put(path: str, params: dict | None = None, json: dict | None = None):
 def get_all_produits():
     return _get("/GetAllProduit")
 
-@st.cache_data(ttl=3600)
-def get_produit(id_produit: int):
-    return _get(f"/GetProduit/{id_produit}")
+
 
 @st.cache_data(ttl=3600)
 def get_all_clients():
@@ -36,7 +34,7 @@ def get_all_clients():
 
 @st.cache_data(ttl=20)
 def get_predictions_by_produit(id_produit: int):
-    # Si ton API renvoie 404 quand rien n'existe, on retourne []
+    
     try:
         return _get(f"/GetPredictionByIdProduit/{id_produit}")
     except requests.HTTPError as e:
@@ -44,6 +42,11 @@ def get_predictions_by_produit(id_produit: int):
             return []
         raise
 
+
+
+def get_produit(id_produit: int):
+    produits = get_all_produits()  
+    return next((p for p in produits if p["id_produit"] == id_produit), None)
 
 def get_predictions_by_client(id_client: int):
     try:

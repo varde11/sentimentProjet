@@ -14,6 +14,7 @@ from fastapi.staticfiles import StaticFiles
 from datetime import datetime,timedelta
 
 from typing import List, Dict, Any
+import base64
 
 
 
@@ -41,7 +42,7 @@ async def lifespan(app:FastAPI):
     yield
     print("fermeture de l'application, merci de l'avoir essayer, a+")
 
-
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 app = FastAPI(title="API sentiment",lifespan=lifespan)
 
 @app.get("/GetHealthy")
@@ -76,22 +77,22 @@ def get_produit_by_id(id_produit:int,db:Session = Depends(get_db)):
             "detail" : produit.detail
         }
 
-
-@app.get("/GetAllProduit",response_model=list[ProduitOut_schema])
-def get_all_produit(db:Session=Depends(get_db)):
-    
-    query = select(
-    Produit.id_produit,
-    func.concat(f"{os.getenv('BASE_URL')}/static/", Produit.lien).label('lien'),
-    Produit.detail
-    )
-
-    produits = db.execute(query).fetchall()
-   
-    if not produits :
-        raise HTTPException(status_code=500,detail="Something went wrong, contact varde for more information.")
-    
-    return produits
+@app.get("/GetAllProduit", response_model=list[ProduitOut_schema])
+def get_all_produit(db: Session = Depends(get_db)):
+    produits = db.query(Produit).all()
+    result = []
+    for p in produits:
+        img_path = os.path.join(BASE_DIR, "static", p.lien)
+        try:
+            with open(img_path, "rb") as f:
+                b64 = base64.b64encode(f.read()).decode()
+            ext = p.lien.rsplit(".", 1)[-1].lower()
+            mime = {"jpg": "image/jpeg", "jpeg": "image/jpeg", "png": "image/png", "webp": "image/webp"}.get(ext, "image/jpeg")
+            lien = f"data:{mime};base64,{b64}"
+        except FileNotFoundError:
+            lien = ""
+        result.append({"id_produit": p.id_produit, "lien": lien, "detail": p.detail})
+    return result
 
 
 @app.get("/GetPredictionByIdPrediction/{id_prediction}",response_model=PredictionOut_schema)
@@ -148,7 +149,7 @@ def predict_sentiment (pred:PredictionIn_schema,db:Session=Depends(get_db)):
         raise HTTPException(status_code=404,detail=f"Le produit d'identifiant {pred.id_produit} n'existe pas.")
 
     predict = predict_final([pred.avis])
-    time_stamp_str = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    
     prediction = Prediction(
         id_client = pred.id_client,
         id_produit = pred.id_produit,
@@ -157,7 +158,7 @@ def predict_sentiment (pred:PredictionIn_schema,db:Session=Depends(get_db)):
         confidence = predict["confidence"],
         model =  predict["model"],
         scores = predict["scores"],
-        time_stamp = datetime.now().strptime(time_stamp_str,"%Y-%m-%d %H:%M:%S")
+        time_stamp = datetime.now().replace(microsecond=0)
     )
     # ajoute un bloc pour vérifie que le client et le produit existe bien, peut être un try au  niveau de db.add
     db.add(prediction)
@@ -177,7 +178,7 @@ def predict_sentiment (pred:PredictPublicIn,db:Session=Depends(get_db)):
         raise HTTPException(status_code=404,detail=f"Le produit d'identifiant {pred.id_produit} n'existe pas.")
 
     predict = predict_final([pred.avis])
-    time_stamp_str = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    
     prediction = Prediction(
         id_client = None,
         id_produit = pred.id_produit,
@@ -186,7 +187,7 @@ def predict_sentiment (pred:PredictPublicIn,db:Session=Depends(get_db)):
         confidence = predict["confidence"],
         model =  predict["model"],
         scores = predict["scores"],
-        time_stamp = datetime.now().strptime(time_stamp_str,"%Y-%m-%d %H:%M:%S")
+        time_stamp = datetime.now().replace(microsecond=0)
     )
     # ajoute un bloc pour vérifie que le client et le produit existe bien, peut être un try au  niveau de db.add
     db.add(prediction)
@@ -360,8 +361,8 @@ def monitoring_alerts(
 
     db: Session = Depends(get_db)
 ):
-    now_str = datetime.now().strftime("%Y-%m-%d %H:%M:%S") 
-    now = datetime.now().strptime(now_str,"%Y-%m-%d %H:%M:%S")
+    
+    now = datetime.now().replace(microsecond=0)
 
     start_last = now - timedelta(days=window_days)
     start_prev = now - timedelta(days=2 * window_days)
@@ -369,6 +370,7 @@ def monitoring_alerts(
     rows = (
         db.query(Prediction)
         .filter(Prediction.time_stamp >= start_prev)
+        .limit(5000)
         .all()
     )
 

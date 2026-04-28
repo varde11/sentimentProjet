@@ -2,14 +2,14 @@
 
 Une solution complète d'analyse de sentiment pour avis clients, déployée en production. Ce projet démontre une architecture **hybride** optimisée pour réduire les coûts d'inférence, couplée à un système d'alerte et de monitoring en temps réel pour les équipes métier.
 
-🔗 **[Voir l'Interface E-commerce (Demo Client)](https://varde11-e-commerce.hf.space/)**
+🔗 **[Voir l'Interface E-commerce ](https://varde11-ecommerce.hf.space)**
 
-🔗 **[Voir l'Interface Admin & Monitoring (Demo Équipe)](https://varde11-console-sentiment.hf.space/)**
+🔗 **[Voir l'Interface Admin & Monitoring ](https://varde11-console-sentiment.hf.space)**
 
 
 ---
 
-## 🏗️ Architecture & Points Forts
+##  Architecture & Points Forts
 
 Ce projet n'est pas un simple notebook de Data Science, c'est une application micro-services orchestrée et pensée pour un usage réel (Scale & Cost Optimization).
 
@@ -34,7 +34,7 @@ L'interface administrateur embarque un système d'alerte métier :
 
 ---
 
-## 🛠️ Tech Stack
+## Tech Stack
 
 | Catégorie | Technologies |
 | :--- | :--- |
@@ -48,7 +48,7 @@ L'interface administrateur embarque un système d'alerte métier :
 
 ---
 
-## 🚀 Installation & Lancement Local
+##  Installation & Lancement Local
 
 Si vous souhaitez faire tourner le projet complet sur votre machine (Backend + DB + Les 2 UIs) :
 

@@ -4,9 +4,7 @@ from api_client import get_monitoring_alerts, ApiError
 
 st.title("Monitoring & Alerts")
 
-# -----------------------
-# Sidebar / paramètres
-# -----------------------
+
 with st.sidebar:
     st.header("Paramètres")
 
@@ -35,9 +33,6 @@ with st.sidebar:
 
 queue_offset = st.session_state.queue_page * page_size
 
-# -----------------------
-# Chargement API
-# -----------------------
 params = {
     "window_days": window_days,
     "spike_factor": float(spike_factor),
@@ -57,9 +52,7 @@ incidents = res.get("incidents", [])
 queue = res.get("review_queue", [])
 popular = res.get("popular_products", [])
 
-# -----------------------
-# Résumé
-# -----------------------
+
 c1, c2, c3 = st.columns(3)
 c1.metric("Incidents", str(len(incidents)))
 c2.metric("Queue (page)", str(len(queue)))
@@ -71,14 +64,10 @@ st.caption(
     f"Page queue: {st.session_state.queue_page + 1}"
 )
 
-# -----------------------
-# Onglets
-# -----------------------
+
 tab1, tab2, tab3 = st.tabs(["🚨 Incidents", "Review Queue", " Produits populaires"])
 
-# ======================================================================
-# TAB 1 : INCIDENTS
-# ======================================================================
+
 with tab1:
     if not incidents:
         st.info("Aucun incident détecté sur la période.")
@@ -110,7 +99,7 @@ with tab1:
             if c in df_inc.columns:
                 df_inc[c] = df_inc[c].fillna("-")
 
-        # colonnes numériques -> restent NaN (Arrow OK)
+        
         num_cols = ["produit", "neg_7j", "neg_14j", "delta", "ratio", "count"]
         for c in num_cols:
             if c in df_inc.columns:
@@ -119,12 +108,12 @@ with tab1:
 
 
 
-        # Populaire en emoji
+        
         df_inc["populaire"] = df_inc["populaire"].apply(
             lambda x: "🟢" if x is True else ("⚪" if x is False else "-")
         )
 
-        # Tri P0 -> P1 -> P2 puis produit
+        
         sev_order = {"P0": 0, "P1": 1, "P2": 2}
         df_inc["sev_rank"] = df_inc["sévérité"].map(lambda x: sev_order.get(x, 9))
         df_inc = df_inc.sort_values(["sev_rank", "produit"]).drop(columns=["sev_rank"])
@@ -141,7 +130,7 @@ with tab1:
             typ = it.get("type")
 
             with st.expander(f"{it.get('severity')} — {it.get('title')}"):
-                # Texte "lisible" au lieu du JSON brut
+                
                 if typ == "volume_spike":
                     st.markdown(
                         f"**Neg 7j:** {details.get('neg_last_window','-')} | "
@@ -163,15 +152,14 @@ with tab1:
                         for ex in examples:
                             st.write(f"- {ex}")
 
-                # Table des samples (si présent)
+                
                 samples = details.get("sample_predictions")
                 if samples:
                     sdf = pd.DataFrame(samples)
                     st.dataframe(sdf, width=None, hide_index=True)
 
-# ======================================================================
-# TAB 2 : REVIEW QUEUE
-# ======================================================================
+
+
 with tab2:
     if not queue:
         st.info("Aucun élément dans la queue sur cette page.")
@@ -209,9 +197,6 @@ with tab2:
 
         st.caption("Pagination : utilise la sidebar (Précédent / Suivant).")
 
-# ======================================================================
-# TAB 3 : PRODUITS POPULAIRES
-# ======================================================================
 with tab3:
     if not popular:
         st.info("Aucun produit populaire détecté sur la période.")

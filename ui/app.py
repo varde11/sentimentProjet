@@ -18,7 +18,6 @@ from api_client import (
 st.set_page_config(page_title="Sentiment E-commerce", page_icon="🛒", layout="wide")
 
 
-# -Session state init 
 if "nav" not in st.session_state:
     st.session_state.nav = "Catalogue"
 
@@ -41,7 +40,6 @@ if st.session_state.nav_request is not None:
     st.session_state.nav_request = None
 
 
-# --------------------- Sidebar ---
 st.sidebar.title("🛒 Sentiment E-commerce")
 
 
@@ -54,7 +52,6 @@ st.sidebar.radio(
 page = st.session_state.nav
 
 
-# --------------------- Helpers -----
 def label_badge(label: str) -> str:
     colors = {
         "negative": "#ef4444",
@@ -89,7 +86,6 @@ def show_predictions_table(preds):
     st.dataframe(df[cols], use_container_width=True)
 
 
-# --------------------- Page: Catalogue ---------------------
 if page == "Catalogue":
     st.markdown("## Catalogue produits")
     st.caption("Choisis un produit, laisse un avis, et suis l’historique des prédictions.")
@@ -124,7 +120,7 @@ if page == "Catalogue":
                     goto("Produit")
 
 
-# --------------------- Page: Produit ---------------------
+
 elif page == "Produit":
     st.markdown("## Produit")
 

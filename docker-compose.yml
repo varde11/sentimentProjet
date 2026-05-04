@@ -11,10 +11,10 @@ services:
     healthcheck:
       
       test: ["CMD-SHELL", "python -c \"import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/GetHealthy')\" || exit 1"]
-      interval: 15s       # Vérifie toutes les 15 secondes
-      timeout: 5s         # Laisse 5s à la requête pour aboutir
-      retries: 3          # Si ça échoue 3 fois de suite (APRÈS le start_period), le conteneur est "unhealthy"
-      start_period: 900s  # Laisse jusqu'à 15 minutes à ton API pour télécharger le modèle
+      interval: 15s      
+      timeout: 5s         
+      retries: 3          
+      start_period: 900s  
     environment:
       DATABASE_URL: ${DATABASE_URL}
       BASE_URL: ${BASE_URL}

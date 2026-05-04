@@ -322,17 +322,17 @@ def compute_priority(
         score += 2
         reasons.append("haute confiance")
 
-    # Mots critiques
+    
     if contains_critical_keyword(avis):
         score += 3
         reasons.append("mot-clé critique détecté")
 
-    # Popularité produit
+    
     if is_popular_product:
         score += 3
         reasons.append("produit populaire")
 
-    # Mapping score -> priorité
+    
     if score >= 7:
         prio = "P0"
     elif score >= 4:
@@ -383,8 +383,7 @@ def monitoring_alerts(
             review_queue=[],
         )
 
-    # 2) Agrégation en mémoire (simple et efficace sur dataset 200-1000 lignes)
-    #    On groupe par produit et par fenêtre.
+  
     by_prod = {}
     for r in rows:
         pid = int(r.id_produit)
@@ -394,7 +393,7 @@ def monitoring_alerts(
         else:
             by_prod[pid]["prev"].append(r)
 
-    # 3) Popularité : top produits par volume last_7d
+    
     popular_stats: List[PopularProductOut] = []
     volume_list = []
     for pid, grp in by_prod.items():
@@ -425,7 +424,7 @@ def monitoring_alerts(
             uncertain_7d=counts["uncertain"],
         ))
 
-    # 4) Incidents : volume spike + keyword severity
+    
     incidents: List[IncidentOut] = []
 
     for pid, grp in by_prod.items():
@@ -435,7 +434,7 @@ def monitoring_alerts(
         neg_last = sum(1 for r in last if (r.label or "").lower() == "negative")
         neg_prev = sum(1 for r in prev if (r.label or "").lower() == "negative")
 
-        # Spike (avec garde-fou min_negative)
+        
         if neg_last >= min_negative and neg_last >= max(1, int(neg_prev * spike_factor)):
             
             neg_samples = [
@@ -474,17 +473,17 @@ def monitoring_alerts(
             ))
 
         
-        # Keyword severity (si au moins un avis contient un mot critique sur last window)
+        
         crit = [r for r in last if contains_critical_keyword(r.avis)]
         if crit:
             sev = "P0" if (pid in popular_set or any((c.label or "").lower() == "negative" for c in crit)) else "P1"
             
             examples = [(c.avis or "")[:120] for c in crit[:3]]
 
-            # keywords réellement rencontrés
+            
             kws = sorted({kw for c in crit for kw in matched_keywords(c.avis)})
 
-            # 2 derniers avis négatifs (si tu veux aussi)
+            
             neg_samples = [
                 {
                     "id_prediction": c.id_prediction,
@@ -516,7 +515,7 @@ def monitoring_alerts(
 
 
 
-    # 5) Review queue priorisée : surtout negative/uncertain sur last window
+    
     queue_candidates = []
     for pid, grp in by_prod.items():
         for r in grp["last"]:

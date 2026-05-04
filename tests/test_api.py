@@ -156,5 +156,3 @@ def test_prediction_deletions(client):
 def test_predictions_for_nonexistent_client_returns_404(client):
     
     assert client.get("/GetPredictionByIdClient/99").status_code == 404
-
-
